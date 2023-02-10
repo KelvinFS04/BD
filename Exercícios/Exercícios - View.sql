@@ -7,7 +7,7 @@ o nome e codigo dos filmes que nunca foram alugados
 o nome e codigo dos clientes que nunca fizeram uma locação
 
 3) Crie uma view chamada vw_Top5, que exiba
-o nome e codigo dos 5 filmes mais alugados
+o nome dos 5 filmes mais alugados
 
 4) Crie uma view chamada vw_LocacaoTOP, que exiba o 
 nome dos clientes de maneira distinta que fizeram locações
@@ -38,3 +38,18 @@ create view vw_ClienteSemLocacao as
 	select c.Cliente, c.CodCli from Cliente c
 	left join Locacao L on c.CodCli = l.CodCli
 	where l.DataLoc is null
+
+
+select * from vw_ClienteSemLocacao
+------------------------------------------------------------------
+--3) 
+create view vw_Top5 as
+	select  top (5) count(m.CodMidia) qtd, m.DescMidia from Midias m
+	inner join ItensLocacao il on m.CodMidia = il.CodMidia
+	inner join Locacao l on il.CodLocacao = l.CodLocacao
+	group by DescMidia
+	order by COUNT(m.CodMidia) desc
+
+select * from vw_ClienteSemLocacao
+------------------------------------------------------------------
+
