@@ -6,6 +6,7 @@ create view vw_func_1 as
 	select * from funcionarios f
 	where f.func_salario > 600
 
+
 --Chamada da view 1
 select * from vw_func_1
 
@@ -33,7 +34,9 @@ inner join setores s on a.setor_id = s.setor_id
 
 -- fazendo joins com 2 views
 create view vw_setor_1 as 
-	select * from funcionarios
+	select * from setores
+
+
 
 create view vw_func_3 as
 	select func_id, func_nome, setor_id from funcionarios
@@ -53,7 +56,7 @@ create view vw_junta_1 as
 	select a.*, b.setor_nome from vw_func_3 a
 inner join vw_setor_1 b on a.setor_id = b.setor_id
 
-select * from vw_junta_1
+select * from vw_setor_1
 
 
 
