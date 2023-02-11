@@ -44,12 +44,24 @@ select * from vw_ClienteSemLocacao
 ------------------------------------------------------------------
 --3) 
 create view vw_Top5 as
-	select  top (5) count(m.CodMidia) qtd, m.DescMidia from Midias m
+	select  top 5 count(m.CodMidia) qtd, m.DescMidia, m.CodMidia from Midias m
 	inner join ItensLocacao il on m.CodMidia = il.CodMidia
 	inner join Locacao l on il.CodLocacao = l.CodLocacao
-	group by DescMidia
-	order by COUNT(m.CodMidia) desc
+	group by m.CodMidia, m.DescMidia
+	order by qtd desc
 
-select * from vw_ClienteSemLocacao
+delete vw_Top5
+
+select * from vw_Top5
 ------------------------------------------------------------------
+--4)
+create view vw_LocacaoTOP as
+	select c.Cliente from Cliente c
+	inner join Locacao l on c.CodCli = l.CodCli
+	inner join ItensLocacao il on l.CodLocacao = il.CodLocacao
+	inner join vw_Top5 vw on il.CodMidia = vw.CodMidia
+	group by c.cliente
 
+drop view vw_LocacaoTOP
+select * from vw_LocacaoTOP
+	
