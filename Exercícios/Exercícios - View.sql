@@ -64,4 +64,6 @@ create view vw_LocacaoTOP as
 
 drop view vw_LocacaoTOP
 select * from vw_LocacaoTOP
-	
+
+
+------------------------------------------------------------------
