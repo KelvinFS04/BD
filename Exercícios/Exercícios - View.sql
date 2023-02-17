@@ -31,6 +31,14 @@ create view vw_nuncaLocados as
 	left join ItensLocacao IL on IL.CodMidia = M.CodMidia
 	where CodLocacao is null
 
+--para resolver outro exercício:
+
+alter view vw_nuncaLocados as
+	select m.CodMidia, m.DescMidia, m.codGenero
+	from Midias m
+	left join ItensLocacao itl on m.CodMidia = itl.CodMidia
+	where itl.CodLocacao is null
+
 select * from vw_nuncaLocados
 ------------------------------------------------------------------
 --2)
@@ -67,3 +75,20 @@ select * from vw_LocacaoTOP
 
 
 ------------------------------------------------------------------
+--5)
+
+create view vw_genero as
+select distinct g.Codgenero, g.descricao
+from vw_nuncaLocados a
+inner join Genero g on g.Codgenero = a.codGenero
+
+
+------------------------------------------------------------------
+--6)
+
+create view vw_ClienteTOP as
+	select top 5 c.Cliente
+	from Locacao L 
+	inner join Cliente C on c.CodCli = L.CodCli
+	group by c.Cliente
+	order by count(*) desc
