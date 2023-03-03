@@ -90,3 +90,46 @@ print 'O resultado da divisão é: ' +cast(@divisão as varchar(15))
 print 'O resultado da multiplicação é: ' +cast(@mult as varchar(15))
 
 
+
+--Stored Procedure com verificações
+--Sp para inclusão de funcionarios com verificação do setor
+
+create or alter procedure SP_insere_Func(
+	@func_id int, @func_nome varchar (50),
+	@gerente_id int, 
+	@setor_id int, 
+	@func_salario decimal(10,2), 
+	@func_dataNasc smalldatetime)
+as begin
+	--verifica se o setor existe
+	if not exists (select setor_id from setores where setor_id = @setor_id)
+	begin
+		print 'Setor informado não existe'
+		return -1
+	end
+
+end
+
+insert into funcionarios values(
+	@func_id  ,
+	@gerente_id , 
+	@setor_id  ,
+	@func_salario  ,
+	@func_dataNasc)
+
+--Verifica se tem o erro na inclusão de dados
+if @@ERROR != 0 
+	begin
+		print 'Ocorreu um erro na inclusão de dados'
+		return -1
+	end
+return 0
+end
+
+--chamada
+declare @ret int
+exec @ret = SP_insere_Func 19, 'Ivan Soares', 2, 12, 1500.87, '1972/10/22'
+if @ret = 0
+	print 'Dados incluidos com sucesso'
+else
+	print 'ocorreu um erro'
